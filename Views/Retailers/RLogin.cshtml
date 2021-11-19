@@ -1,0 +1,52 @@
+﻿@model OnlineShoppingSystem.Models.Retailer
+
+@{
+    ViewData["Title"] = "RLogin";
+    Layout = "~/Views/Shared/HomePage.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Retailer.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+<h4 align="center">Welcome To Retailers Login Module</h4>
+<br />
+<p1 align="center">Note:Only Authorised User Can Login</p1>
+<br />
+<p1 align="center">Note:Contact Admin To Access Retailer Login</p1>
+<br />
+<p1 align="center">contact:Mail To Admin@gmail.com</p1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="RLogin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RetailerId" class="control-label"></label>
+                <input asp-for="RetailerId" class="form-control" />
+                <span asp-validation-for="RetailerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <p>@ViewBag.Message</p>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

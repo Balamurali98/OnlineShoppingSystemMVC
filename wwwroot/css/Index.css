@@ -1,0 +1,76 @@
+﻿
+body {
+    background-color: lavenderblush
+}
+
+p1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    color: red
+}
+ul#horizontal-list {
+    min-width: 696px;
+    list-style: none;
+    padding-top: 20px;
+}
+
+    ul#horizontal-list li {
+        display: inline;
+    }
+
+
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+    letter-spacing: 2.5px
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: red;
+}
+tr {
+    background-color: yellow;
+}
+
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    color: orangered;
+}
+
+input[type=text] {
+    width: 75%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+
+input[type=password] {
+    width: 75%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+
+h4 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    color: green;
+}
+
+
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}

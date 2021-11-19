@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "checkout";
+    //ViewData["Title"] = "checkout";
+    Layout = "~/Views/Shared/CustomerPageLayout.cshtml";
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Online.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<input type="submit" value="Customer ID:@ViewBag.uid" />
+<h1 align="center">List of My Orders & Confirmation</h1>
+@if (TempData["cart"] != null)
+{
+
+
+    <table class="table table-responsive">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>QUANTITY</th>
+                <th>BILL</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in TempData["cart"] as List<OnlineShoppingSystem.Models.MyCart>)
+            {
+
+                <tr>
+                   <td>@item.proid</td>
+                    <td>@item.proname</td>
+                    <td>@item.price</td>
+                    <td>@item.qty</td>
+                    <td>@item.bill</td>
+                </tr>
+
+            }
+
+        </tbody>
+
+        <tfoot>
+            <tr>
+                @*<td colspan="4"></td>
+                <td>@TempData["total"]</td>*@
+
+            </tr>
+        </tfoot>
+
+    </table>
+
+
+
+
+
+}
+else
+{
+    <h2 style="color:red" align="center"> Cart is empty....</h2>
+    @Html.ActionLink("go Back", "Index", "Customer")
+}
+
+
+

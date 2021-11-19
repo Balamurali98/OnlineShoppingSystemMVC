@@ -1,0 +1,98 @@
+﻿@model IEnumerable<OnlineShoppingSystem.Models.Retailer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminPage.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Retailer.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+
+<link rel="stylesheet" href="~/css/Index.css" />
+
+<h1 align="center">Welcome To Retailers DashBoard</h1>
+@*<form asp-action="Index" method="POST">
+        <div class="row input-group">
+            <input type="text" name="search" id="search" class="form-control" />
+            <div class="input-group-btn">
+                <input type="submit" class="btn btn-primary" value="Search" />
+            </div>
+        </div>
+    </form>*@
+<p>
+    <a asp-action="Create">Add New Retailer</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RetailerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RetailerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phonenumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailId)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Confirmpassword)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetailerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetailerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phonenumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailId)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Confirmpassword)
+                    </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RetailerId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.RetailerId">View</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RetailerId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

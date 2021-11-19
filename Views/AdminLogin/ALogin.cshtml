@@ -1,0 +1,78 @@
+﻿@model OnlineShoppingSystem.Models.AdminLogin
+
+@{
+    ViewData["Title"] = "ALogin";
+    Layout = "~/Views/Shared/HomePage.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/admin.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<style>
+    body {
+        background-color: lightpink
+    }
+
+    input[type=text] {
+        width: 75%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 2px solid black;
+        border-radius: 6px;
+    }
+
+    input[type=password] {
+        width: 75%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 2px solid black;
+        border-radius: 6px;
+    }
+
+    h4 {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: x-large;
+        color: orangered;
+    }
+
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+
+<h4 align="center">Welcome To AdminLogin</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ALogin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AdminId" class="control-label"></label>
+                <input asp-for="AdminId" class="form-control" />
+                <span asp-validation-for="AdminId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminPassword" class="control-label"></label>
+                <input asp-for="AdminPassword" class="form-control" />
+                <span asp-validation-for="AdminPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="SUBMIT" class="btn btn-primary" />
+            </div>
+            <p>@ViewBag.Message</p>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

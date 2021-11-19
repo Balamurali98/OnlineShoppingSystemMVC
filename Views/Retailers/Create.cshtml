@@ -1,0 +1,74 @@
+﻿@model OnlineShoppingSystem.Models.Retailer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/AdminPage.cshtml";
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Retailer.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<h4 align="center">Welcome To Retailers Registration Module</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RetailerId" class="control-label"></label>
+                <input asp-for="RetailerId" class="form-control" />
+                <span asp-validation-for="RetailerId" class="text-danger"></span>
+                <p>@ViewBag.Message</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetailerName" class="control-label"></label>
+                <input asp-for="RetailerName" class="form-control" />
+                <span asp-validation-for="RetailerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phonenumber" class="control-label"></label>
+                <input asp-for="Phonenumber" class="form-control" />
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailId" class="control-label"></label>
+                <input asp-for="EmailId" class="form-control" />
+                <span asp-validation-for="EmailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Confirmpassword" class="control-label"></label>
+                <input asp-for="Confirmpassword" class="form-control" />
+                <span asp-validation-for="Confirmpassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

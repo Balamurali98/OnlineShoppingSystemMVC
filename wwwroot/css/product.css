@@ -1,0 +1,58 @@
+﻿
+body {
+    background-color: lavenderblush
+}
+
+p1 {
+    color: red
+}
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+    letter-spacing: 2.5px
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: red;
+}
+tr {
+    background-color: yellow;
+}
+
+
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    color: orangered;
+}
+
+
+
+h4 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    color: green;
+}
+
+
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+.col-4 {
+    float: left;
+}
+/*.row::after{
+    content:"";
+    display:table;
+    clear:both;
+}*/

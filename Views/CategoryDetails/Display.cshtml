@@ -1,0 +1,66 @@
+﻿@model IEnumerable<OnlineShoppingSystem.Models.Category>
+
+@{
+    ViewData["Title"] = "Display";
+    Layout = "~/Views/Shared/RetailerPage.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/category.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+<input type="submit" value="Retailer ID:@ViewBag.uid" />
+<h1 align="center">Welcome To Category DashBoard</h1>
+<form asp-controller="CategoryDetails" asp-action="Search" method="get">
+    <p>
+        Category name: <input type1="text" name="SearchString" width="10" required />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<p>
+    <a asp-action="AddCategory">Add New Category</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descriptions)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descriptions)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>|
+                    <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

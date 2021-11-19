@@ -1,0 +1,71 @@
+﻿@model OnlineShoppingSystem.Models.Customer
+
+@{
+    ViewData["Title"] = "CustomerSignup";
+    Layout = "~/Views/Shared/HomePage.cshtml";
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Online.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<h4 align="center">Welcome To Customer Registration Module</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CustomerSignup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phonenumber" class="control-label"></label>
+                <input asp-for="Phonenumber" class="form-control" />
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailId" class="control-label"></label>
+                <input asp-for="EmailId" class="form-control" />
+                <span asp-validation-for="EmailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Confirmpassword" class="control-label"></label>
+                <input asp-for="Confirmpassword" class="form-control" />
+                <span asp-validation-for="Confirmpassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Signup" class="btn btn-primary" />
+            </div>
+        </form>
+        <form asp-action="CustomerLogin">
+            <div class="form-group">
+                <p1 style="font-size: 20px; font-family: 'Times New Roman', Times, serif;color:red ">
+                    if u have already account login here
+                </p1>   <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -191,9 +191,83 @@ namespace OnlineShoppingSystem.Controllers
                             select p).FirstOrDefault();
             return View(ad1);
         }
+        public IActionResult Logout()
+        {
+
+            HttpContext.Session.Remove("uid");
+            return RedirectToAction("CustomerLogin", "Customer");
 
 
-        
+        }
+       
+
+        [HttpGet]
+        public IActionResult MyOrderConfirmation()
+        {
+            ViewBag.uid = HttpContext.Session.GetString("uid");
+            string email = ViewBag.uid;
+            var ad1 = (from p in db.Customers
+                            where p.EmailId == email
+                            select p.CustomerId).FirstOrDefault();
+            var customerlist = (from cust in db.Customers
+                                join
+      or in db.ProductOrders on cust.CustomerId!=ad1 equals or.CustomerId!=ad1
+                                select new { cust.CustomerId, cust.CustomerName, cust.Address, or.OrderId, or.Productname, or.Price, or.Quantity, or.OrderedDate }).ToList();
+            List<ProductOrderDetail> lvm = new List<ProductOrderDetail>();
+            foreach (var item in customerlist)
+            {
+                ProductOrderDetail objvm = new ProductOrderDetail();
+                objvm.OrderId = item.OrderId;
+                objvm.Productname = item.Productname;
+                objvm.CustomerId = item.CustomerId;
+                objvm.Customername = item.CustomerName;
+                objvm.Address = item.Address;
+                objvm.OrderedDate = item.OrderedDate;
+                lvm.Add(objvm);
+                //db.ProductOrderDetails.Add(objvm);
+                //db.SaveChanges();
+
+            }
+
+            return View(lvm);
+        }
+        public IActionResult ForgetPassword(string email)
+        {
+            var ad1 = (from p in db.Customers
+                       where p.EmailId == email
+                       select p).FirstOrDefault();
+
+            return View(ad1);
+        }
+
+        [HttpGet]
+        public IActionResult ForgetPassword(Customer c)
+        {
+            var ad1 = (from p in db.Customers
+                       where p.EmailId == email
+                       select p).FirstOrDefault();
+            if (ModelState.IsValid)
+            {
+
+                ad1.Password = c.Password;
+                ad1.Confirmpassword = c.Confirmpassword;
+                db.SaveChanges();
+
+                ViewBag.Message = "Password updated Successfully";
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "Password updated fail";
+                return View();
+            }
+
+          
+        }
+
+      
+
+
 
     }
 }

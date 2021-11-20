@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<OnlineShoppingSystem.Models.ProductOrder>
 @{
     ViewBag.Title = "checkout";
     //ViewData["Title"] = "checkout";
@@ -17,59 +17,75 @@
 }
 <input type="submit" value="Customer ID:@ViewBag.uid" />
 <h1 align="center">List of My Orders & Confirmation</h1>
-@if (TempData["cart"] != null)
-{
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Productname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderedDate)
+            </td>
+            <td>
+                <a asp-action="CartEdit" asp-route-id="@item.OrderId">Edit</a>
+                <a asp-action="CartDelete" asp-route-id="@item.OrderId">Delete</a>
 
-    <table class="table table-responsive">
+            </td>
+            <td>
+                <a asp-controller="MyProductCart" asp-action="PaymentDetails" asp-route-id="@item.OrderId">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>QUANTITY</th>
-                <th>BILL</th>
-            </tr>
+                    <input type="submit" value="Pay" class="btn btn-primary" />
 
-        </thead>
-        <tbody>
+                </a>
+            </td>
 
-            @foreach (var item in TempData["cart"] as List<OnlineShoppingSystem.Models.MyCart>)
-            {
+        </tr>
+            
+           
+            
 
-                <tr>
-                   <td>@item.proid</td>
-                    <td>@item.proname</td>
-                    <td>@item.price</td>
-                    <td>@item.qty</td>
-                    <td>@item.bill</td>
-                </tr>
-
-            }
-
-        </tbody>
-
-        <tfoot>
-            <tr>
-                @*<td colspan="4"></td>
-                <td>@TempData["total"]</td>*@
-
-            </tr>
-        </tfoot>
-
+        }
+    </tbody>
     </table>
 
-
-
-
-
-}
-else
-{
-    <h2 style="color:red" align="center"> Cart is empty....</h2>
-    @Html.ActionLink("go Back", "Index", "Customer")
-}
 
 
 

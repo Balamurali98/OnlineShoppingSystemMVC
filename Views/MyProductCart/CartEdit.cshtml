@@ -1,0 +1,46 @@
+﻿@model OnlineShoppingSystem.Models.ProductOrder
+
+@{
+    ViewData["Title"] = "CartEdit";
+    Layout = "~/Views/Shared/AdminPage.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-image: url('/Backgrndimg/Online.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+    </style>
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CartEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Productname" class="control-label"></label>
+                <input asp-for="Productname" class="form-control" disabled />
+                <span asp-validation-for="Productname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

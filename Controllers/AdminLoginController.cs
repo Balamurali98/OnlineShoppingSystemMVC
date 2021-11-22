@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShoppingSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace OnlineShoppingSystem.Controllers
         {
             return View();
         }
-
+        #region AdminLogin Module
         public IActionResult ALogin()
         {
             return View();
@@ -58,6 +59,7 @@ namespace OnlineShoppingSystem.Controllers
                             select p;
                     if (q.Any())
                     {
+                        HttpContext.Session.SetString("uid",adminLogin.AdminId);
                         ViewBag.Message = "Login Successfull";
                         return RedirectToAction("Index");
 
@@ -72,6 +74,58 @@ namespace OnlineShoppingSystem.Controllers
                 }
             }
         }
+        #endregion
+
+        #region AdminLogout
+        public IActionResult Logout()
+        {
+
+            HttpContext.Session.Remove("uid");
+            return RedirectToAction("ALogin", "AdminLogin");
+
+
+        }
+        #endregion
+        #region CustomerDisplay
+        public IActionResult CustomerDisplay()
+        {
+            ViewBag.uid = HttpContext.Session.GetString("uid");
+            List<Customer> customers = db.Customers.ToList();
+            return View(customers);
+        }
+        #endregion
+
+        #region CustomerDelete Module
+        public IActionResult CustomerDelete(int id)
+        {
+
+            Customer customer = db.Customers.Find(id);
+            db.Customers.Remove(customer);
+            db.SaveChanges();
+            return RedirectToAction("CustomerDisplay");
+        }
+        #endregion
+
+        #region ProductDisplay
+        public IActionResult ProductDisplay()
+        {
+            ViewBag.uid = HttpContext.Session.GetString("uid");
+            List<Product> Product = db.Products.ToList();
+            return View(Product);
+        }
+        #endregion
+
+        #region ProductEdit
+
+        public IActionResult ProductDelete(int id)
+        {
+
+            Product product = db.Products.Find(id);
+            db.Products.Remove(product);
+            db.SaveChanges();
+            return RedirectToAction("ProductDisplay");
+        }
+        #endregion
 
 
 

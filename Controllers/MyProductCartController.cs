@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnlineShoppingSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,8 @@ namespace OnlineShoppingSystem.Controllers
             db = context;
             this._hostEnvironment = hostEnvironment;
         }
- 
 
-
-
+        #region CustomerProductCart
         public ActionResult MyCart(int Id)
         {
 
@@ -35,7 +34,7 @@ namespace OnlineShoppingSystem.Controllers
   
 
         [HttpPost]
-        public ActionResult MyCart(Product product, string qty, int Id)
+        public ActionResult MyCart(Product product, string qty, int Id, ProductOrder objvm)
         {
             var productlist = (from p in db.Products where p.ProductId == Id select p).ToList();
 
@@ -43,11 +42,11 @@ namespace OnlineShoppingSystem.Controllers
             List<ProductOrder> po = new List<ProductOrder>();
             foreach (var item in productlist )
             {
-              ProductOrder objvm = new ProductOrder();
+              //ProductOrder objvm = new ProductOrder();
                 objvm.ProductId = Id;
                 objvm.Productname = item.ProductName;
                 objvm.Quantity= Convert.ToInt32(qty);
-                objvm.OrderedDate = DateTime.MinValue;
+                objvm.OrderedDate = DateTime.UtcNow;
                 objvm.unitprice = Convert.ToInt32(item.Price);
                 ViewBag.Message = objvm.unitprice;
                 TempData.Keep();
@@ -55,14 +54,24 @@ namespace OnlineShoppingSystem.Controllers
                 po.Add(objvm);
                 db.ProductOrders.Add(objvm);
                 db.SaveChanges();
+                TempData["ProductID"] = JsonConvert.SerializeObject(objvm.ProductId);
+                TempData["ProductName"] = JsonConvert.SerializeObject(objvm.Productname);
+                TempData["Amount"] = JsonConvert.SerializeObject(objvm.Price);
+                TempData["UnitPrice"] = JsonConvert.SerializeObject(objvm.unitprice);
+                objvm.unitprice = decimal.Parse((string)TempData["UnitPrice"]);
+                ViewBag.Amount1 = objvm.unitprice;
+                TempData.Keep();
 
             }
+
 
            
 
             return RedirectToAction("checkout");
         }
+        #endregion
 
+        #region ProductCheckout
         public ActionResult checkout()
         {
            
@@ -71,7 +80,8 @@ namespace OnlineShoppingSystem.Controllers
             List<ProductOrder> categories = db.ProductOrders.ToList();
             return View(categories);
         }
-
+        #endregion
+        #region Cart Delete
         public IActionResult  CartDelete(int id)
         {
             ProductOrder productOrder= db.ProductOrders.Find(id);
@@ -79,7 +89,8 @@ namespace OnlineShoppingSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Checkout");
         }
-
+        #endregion
+        #region Edit Product Cart
         public IActionResult CartEdit(int id)
         {
             ProductOrder productOrder = db.ProductOrders.Find(id);
@@ -97,14 +108,24 @@ namespace OnlineShoppingSystem.Controllers
 
             return RedirectToAction("Checkout");
         }
+        #endregion
         public ActionResult OrderConfirmation()
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
             return View();
         }
+
+        #region Payment Module
         public IActionResult PaymentDetails()
         {
-           
+ 
+            BankDetail payment = new BankDetail();
+            payment.Balance = decimal.Parse((string)TempData["Amount"]);
+            payment.ProductName =(string) TempData["ProductName"];
+            ViewBag.Amount = payment.Balance;
+            ViewBag.ProductId = payment.ProductId;
+            ViewBag.Productname = payment.ProductName;
+            TempData.Keep();
             return View();
            
         }
@@ -112,12 +133,18 @@ namespace OnlineShoppingSystem.Controllers
         public IActionResult PaymentDetails(BankDetail bank)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
+            BankDetail payment = new BankDetail();
+            payment.Balance = decimal.Parse((string)TempData["Amount"]);
+            payment.ProductName = (string)TempData["ProductName"];
+            ViewBag.Amount = payment.Balance;
+            TempData.Keep();
             if (ModelState.IsValid)
             {
 
                 db.BankDetails.Add(bank);
                 db.SaveChanges();
-                return RedirectToAction("OrderConfirmation");
+                ViewBag.Message = "Payment Done & Order Placed Successfully";
+                return View();
 
             }
             else
@@ -127,9 +154,10 @@ namespace OnlineShoppingSystem.Controllers
         }
 
     }
+    #endregion
 
 
- 
+
 
 
 

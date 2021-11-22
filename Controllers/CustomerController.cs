@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +28,7 @@ namespace OnlineShoppingSystem.Controllers
             var onlineShoppingSystemContext = db.Products.Include(p => p.Category).Include(p => p.Retailer);
             return View(await onlineShoppingSystemContext.ToListAsync());
         }
+        #region SearchProduct
         public async Task<IActionResult> SearchProduct(string searchString)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
@@ -46,11 +47,9 @@ namespace OnlineShoppingSystem.Controllers
 
             return View(await pro.ToListAsync());
         }
-        //[HttpPost]
-        //public string Search(string searchString, bool notUsed)
-        //{
-        //    return "From [HttpPost]Index: filter on " + searchString;
-        //}
+        #endregion
+
+        #region CustomerSignup
         public IActionResult CustomerSignup()
         {
             return View();
@@ -61,10 +60,24 @@ namespace OnlineShoppingSystem.Controllers
 
             if (ModelState.IsValid)
             {
-              
+               Customer customer1 = db.Customers.Where(x => x.EmailId == customer.EmailId).FirstOrDefault();
+                Customer customer2 = db.Customers.Where(x => x.Phonenumber== customer.Phonenumber).FirstOrDefault();
+                if (customer1 != null)
+                {
+                    ViewBag.Message = "Email Id Exist";
+                    return View();
+                }
+                else if (customer2 != null)
+                {
+                    ViewBag.Message1 = "Phone number Already Exist";
+                    return View();
+                }
+                else
+                {
                     db.Customers.Add(customer);
-                db.SaveChanges();
-                return RedirectToAction("CustomerLogin");
+                    db.SaveChanges();
+                    return RedirectToAction("CustomerLogin");
+                }    
 
             }
             else
@@ -72,8 +85,9 @@ namespace OnlineShoppingSystem.Controllers
                 return View();
             }
         }
-    
-       
+
+        #endregion
+        #region Customerlogin Module
         public IActionResult CustomerLogin()
         {
             return View();
@@ -128,13 +142,18 @@ namespace OnlineShoppingSystem.Controllers
             }
         }
 
+        #endregion
+
+        #region DisplayCustomer
         public IActionResult Display()
         {
 
             List<Customer> customers = db.Customers.ToList();
             return View(customers);
         }
+        #endregion
 
+        #region CustomerDelete
         public IActionResult Delete(int id)
         {
 
@@ -144,7 +163,7 @@ namespace OnlineShoppingSystem.Controllers
             return RedirectToAction("Display");
         }
 
-
+        #endregion
         public IActionResult Details(int id)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
@@ -154,7 +173,7 @@ namespace OnlineShoppingSystem.Controllers
         }
 
 
-
+        #region Customer Edit Module
         public IActionResult Edit(int id)
         {
             Customer customer = db.Customers.Find(id);
@@ -175,8 +194,10 @@ namespace OnlineShoppingSystem.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("CustomerLogin");
+            ViewBag.Message = "Account Updated Successfully";
+            return View();
         }
+        #endregion
 
         [HttpGet]
         public IActionResult AccountDetails(Customer customer)
@@ -199,10 +220,10 @@ namespace OnlineShoppingSystem.Controllers
 
 
         }
-       
 
+        #region Product OrderModule
         [HttpGet]
-        public IActionResult MyOrderConfirmation()
+        public IActionResult MyOrderConfirmation(Customer c)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
             string email = ViewBag.uid;
@@ -210,19 +231,24 @@ namespace OnlineShoppingSystem.Controllers
                             where p.EmailId == email
                             select p.CustomerId).FirstOrDefault();
             var customerlist = (from cust in db.Customers
-                                join
-      or in db.ProductOrders on cust.CustomerId!=ad1 equals or.CustomerId!=ad1
-                                select new { cust.CustomerId, cust.CustomerName, cust.Address, or.OrderId, or.Productname, or.Price, or.Quantity, or.OrderedDate }).ToList();
+                             join
+      or in db.ProductOrders  on cust.CustomerId==ad1 equals or.CustomerId== ad1
+                                join m in db.Products on or.ProductId equals m.ProductId
+                                select new { cust.CustomerId, cust.CustomerName, cust.Address, or.OrderId, or.Productname, or.Quantity, or.OrderedDate,m.Price}).ToList();
             List<ProductOrderDetail> lvm = new List<ProductOrderDetail>();
             foreach (var item in customerlist)
             {
                 ProductOrderDetail objvm = new ProductOrderDetail();
                 objvm.OrderId = item.OrderId;
                 objvm.Productname = item.Productname;
+                objvm.quantity = item.Quantity;
+                objvm.Price = (int)item.Price;
+                objvm.TotalPrice = (objvm.quantity)*(int)objvm.Price;
                 objvm.CustomerId = item.CustomerId;
-                objvm.Customername = item.CustomerName;
                 objvm.Address = item.Address;
                 objvm.OrderedDate = item.OrderedDate;
+                objvm.PaymentStatus = "paid";
+                objvm.Deliverydate = DateTime.Today.AddDays(10);
                 lvm.Add(objvm);
                 //db.ProductOrderDetails.Add(objvm);
                 //db.SaveChanges();
@@ -231,43 +257,48 @@ namespace OnlineShoppingSystem.Controllers
 
             return View(lvm);
         }
-        public IActionResult ForgetPassword(string email)
-        {
-            var ad1 = (from p in db.Customers
-                       where p.EmailId == email
-                       select p).FirstOrDefault();
 
-            return View(ad1);
+        #endregion
+
+        #region ChangePasswordModule
+        public IActionResult ChangePassword()
+        {
+            return View();
         }
 
-        [HttpGet]
-        public IActionResult ForgetPassword(Customer c)
+        [HttpPost]
+        public IActionResult ChangePassword(ForgetPassword pass)
         {
-            var ad1 = (from p in db.Customers
-                       where p.EmailId == email
-                       select p).FirstOrDefault();
-            if (ModelState.IsValid)
+            try
             {
+                var query = db.Customers.Where(customer => customer.EmailId == pass.EmailId).SingleOrDefault();
+                if (query != null)
+                {
+                    query.EmailId = pass.EmailId;
+                    query.Password = pass.Password;
 
-                ad1.Password = c.Password;
-                ad1.Confirmpassword = c.Confirmpassword;
-                db.SaveChanges();
-
-                ViewBag.Message = "Password updated Successfully";
-                return View();
+                    db.SaveChanges();
+                    ViewBag.Message = "Password Updated Successfully";
+                    return View();
+                }
+                else
+                {
+                    TempData["msg"] = "Password Not updated";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ViewBag.Message = "Password updated fail";
-                return View();
+                TempData["msg"] = ex;
             }
 
-          
+            return View();
         }
-
-      
-
-
-
     }
+
+
+    #endregion
+
+
+
 }
+

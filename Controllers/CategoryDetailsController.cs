@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShoppingSystem.Models;
@@ -16,6 +16,8 @@ namespace OnlineShoppingSystem.Controllers
         {
             db = context;
         }
+
+        #region Category Search Module
         public async Task<IActionResult> Search(string searchString)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
@@ -38,7 +40,9 @@ namespace OnlineShoppingSystem.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region Add Category
         public IActionResult AddCategory()
         {
             return View();
@@ -68,12 +72,19 @@ namespace OnlineShoppingSystem.Controllers
                 return View();
             }      
         }
+        #endregion
+
+        #region CategoryDisplay
         public IActionResult Display()
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
             List<Category> categories = db.Categories.ToList();
             return View(categories);
         }
+
+        #endregion
+
+        #region CategoryDelete
 
         public IActionResult Delete(string id)
         {
@@ -82,17 +93,20 @@ namespace OnlineShoppingSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Display");
         }
+        #endregion
 
-        
+        #region CategoryDetails
+
         public IActionResult Details(string id)
         {
             Category category = db.Categories.Find(id);
 
             return View(category);
         }
+        #endregion
 
-    
 
+        #region Edit Category Module
         public IActionResult Edit(string id)
         {
             Category category = db.Categories.Find(id);
@@ -111,7 +125,7 @@ namespace OnlineShoppingSystem.Controllers
 
             return RedirectToAction("Display");
         }
-
+        #endregion
 
 
     }

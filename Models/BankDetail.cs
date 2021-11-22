@@ -15,6 +15,8 @@ namespace OnlineShoppingSystem.Models
         [Required]
         [RegularExpression(@"[0-9]{16}", ErrorMessage = "Please enter Valid Card number")]
         public string CardNumber { get; set; }
+          [Required]
+        [RegularExpression(@"[0-9]{3}", ErrorMessage = "Please enter Valid CCV number")]
         public string Cardtye { get; set; }
         public string Cvv { get; set; }
         public decimal? Balance { get; set; }

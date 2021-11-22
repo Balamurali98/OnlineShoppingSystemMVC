@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +18,15 @@ namespace OnlineShoppingSystem.Controllers
         public RetailersController(OnlineShoppingSystemContext context)
         {
             _context = context;
+        }
+
+        public IActionResult Logout()
+        {
+            
+            HttpContext.Session.Remove("uid");
+            return RedirectToAction("RLogin", "Retailers");
+
+
         }
 
         public IActionResult Welcome()
@@ -89,7 +98,7 @@ namespace OnlineShoppingSystem.Controllers
             }
         }
 
-        // GET: Retailers
+        #region Display RetailerDashboard
         public async Task<IActionResult> Index()
         {
           
@@ -114,34 +123,52 @@ namespace OnlineShoppingSystem.Controllers
             return View(retailer);
         }
 
-        // GET: Retailers/Create
+        #endregion
+
+        #region Add RetailerDetails
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Retailers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RetailerId,RetailerName,Gender,Address,Phonenumber,EmailId,Password,Confirmpassword")] Retailer retailer)
         {
-            //if (retailer.RetailerId==retailer.RetailerId)
-            //{
-            //    ViewBag.Message = "Retailer ID Already Exist";
-            //    return View();
-            //}
+           
            if (ModelState.IsValid)
             {
-                _context.Add(retailer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               Retailer retailer1 = _context.Retailers.Where(x => x.RetailerId == retailer.RetailerId).FirstOrDefault();
+                Retailer retailer2 = _context.Retailers.Where(x => x.EmailId == retailer.EmailId).FirstOrDefault();
+                Retailer retailer3 = _context.Retailers.Where(x => x.Phonenumber == retailer.Phonenumber).FirstOrDefault();
+                if (retailer1 != null)
+                {
+                    ViewBag.Message = "Retailer Id Exist";
+                    return View();
+                }
+                else if (retailer2!= null)
+                {
+                    ViewBag.Message1 = "Email Id Already Exist";
+                    return View();
+                }
+                else if (retailer3 != null)
+                {
+                    ViewBag.Message3 = "Phonenumber Already Exist";
+                    return View();
+                }
+                else
+                {
+                    _context.Add(retailer);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(retailer);
         }
 
-        // GET: Retailers/Edit/5
+        #endregion
+
+        #region Edit Retailer
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -157,9 +184,6 @@ namespace OnlineShoppingSystem.Controllers
             return View(retailer);
         }
 
-        // POST: Retailers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("RetailerId,RetailerName,Gender,Address,Phonenumber,EmailId,Password,Confirmpassword")] Retailer retailer)
@@ -191,8 +215,8 @@ namespace OnlineShoppingSystem.Controllers
             }
             return View(retailer);
         }
-
-        // GET: Retailers/Delete/5
+        #endregion
+        #region DeleteRetailer
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -210,7 +234,6 @@ namespace OnlineShoppingSystem.Controllers
             return View(retailer);
         }
 
-        // POST: Retailers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -220,10 +243,23 @@ namespace OnlineShoppingSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region check RetailerId exist
         private bool RetailerExists(string id)
         {
             return _context.Retailers.Any(e => e.RetailerId == id);
         }
+        #endregion
+
+        #region Display CustomerProductOrder
+        public IActionResult Display()
+        {
+            ViewBag.uid = HttpContext.Session.GetString("uid");
+            List<ProductOrder> Product = _context.ProductOrders.ToList();
+            return View(Product);
+        }
+        #endregion
+
     }
 }

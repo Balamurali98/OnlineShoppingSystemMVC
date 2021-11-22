@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +23,7 @@ namespace OnlineShoppingSystem.Controllers
             this._hostEnvironment = hostEnvironment;
            
         }
+        #region Search Products
         public async Task<IActionResult> Search(string searchString,Product product)
         {
             var pro = from m in _context.Products
@@ -53,12 +54,13 @@ namespace OnlineShoppingSystem.Controllers
         {
             return "From [HttpPost]Index: filter on " + searchString;
         }
+        #endregion
         public async Task<IActionResult> ProductHomePage()
         {
             var onlineShoppingSystemContext = _context.Products.Include(p => p.Category).Include(p => p.Retailer);
             return View(await onlineShoppingSystemContext.ToListAsync());
         }
-        // GET: Products
+        #region Display ProductDashboard
 
         public async Task<IActionResult> Index(Retailer retailer)
         {
@@ -68,7 +70,9 @@ namespace OnlineShoppingSystem.Controllers
             return View(await onlineShoppingSystemContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        #endregion
+
+        #region Display Particular Product
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -88,7 +92,9 @@ namespace OnlineShoppingSystem.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        #endregion
+
+        #region Add Products
         public IActionResult Create()
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
@@ -98,9 +104,7 @@ namespace OnlineShoppingSystem.Controllers
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,ProductName,CategoryId,RetailerId,Description,ImageFile,Features,AvailableProduct,Price")] Product product)
@@ -127,8 +131,8 @@ namespace OnlineShoppingSystem.Controllers
             ViewData["RetailerId"] = new SelectList(_context.Retailers, "RetailerId", "RetailerId", product.RetailerId);
             return View(product);
         }
-
-        // GET: Products/Edit/5
+        #endregion
+        #region Edit Product
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -146,9 +150,6 @@ namespace OnlineShoppingSystem.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,CategoryId,RetailerId,Description,ImageFile,Features,AvailableProduct,Price")] Product product)
@@ -195,8 +196,8 @@ namespace OnlineShoppingSystem.Controllers
             ViewData["RetailerId"] = new SelectList(_context.Retailers, "RetailerId", "RetailerId", product.RetailerId);
             return View(product);
         }
-
-        // GET: Products/Delete/5
+        #endregion
+        #region Delete Products
         public async Task<IActionResult> Delete(int? id)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
@@ -217,7 +218,7 @@ namespace OnlineShoppingSystem.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+   
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -232,11 +233,14 @@ namespace OnlineShoppingSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region CheckProductExits
         private bool ProductExists(int id)
         {
             ViewBag.uid = HttpContext.Session.GetString("uid");
             return _context.Products.Any(e => e.ProductId == id);
         }
+        #endregion
     }
 }

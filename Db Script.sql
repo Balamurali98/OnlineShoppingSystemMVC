@@ -174,7 +174,7 @@ SET IDENTITY_INSERT [dbo].[ProductOrders] ON
 INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4067, 1006, N'Dell Gaming Laptop', 4, CAST(400000 AS Decimal(18, 0)), CAST(N'2021-11-21' AS Date), 2056)
 INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4072, 1018, N'Iphone', 3, CAST(1500000 AS Decimal(18, 0)), CAST(N'2021-11-21' AS Date), 2059)
 INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4073, 1006, N'Dell Gaming Laptop', 2, CAST(200000 AS Decimal(18, 0)), CAST(N'2021-11-22' AS Date), 2056)
-INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4077, 1006, N'Dell Gaming Laptop', 2, CAST(200000 AS Decimal(18, 0)), CAST(N'2021-11-22' AS Date), NULL)
+INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4077, 1006, N'Dell Gaming Laptop', 2, CAST(200000 AS Decimal(18, 0)), CAST(N'2021-11-22' AS Date), 2056)
 SET IDENTITY_INSERT [dbo].[ProductOrders] OFF
 GO
 INSERT [dbo].[Retailer] ([RetailerId], [RetailerName], [Gender], [Address], [Phonenumber], [EmailID], [Password]) VALUES (N'1001', N'Balamurali', N'Male', N'Vellore', N'9003915522', N'balam@g.com', N'Bala@1')

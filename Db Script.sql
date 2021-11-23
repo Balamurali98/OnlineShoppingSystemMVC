@@ -169,6 +169,10 @@ INSERT [dbo].[Product] ([ProductId], [ProductName], [CategoryId], [RetailerId], 
 INSERT [dbo].[Product] ([ProductId], [ProductName], [CategoryId], [RetailerId], [Description], [ProductImage], [Features], [AvailableProduct], [Price]) VALUES (1023, N'HP GAMING', N'Lap2012', N'1001', N'Holiday Offers', N'iphone21262278.jfif', N'Good', 5, CAST(11111111 AS Decimal(18, 0)))
 SET IDENTITY_INSERT [dbo].[Product] OFF
 GO
+INSERT [dbo].[ProductOrderDetails] ([OrderId], [CustomerId], [BillId], [Customername], [OrderedDate], [Address], [Productname]) VALUES (4067, 2056, 5024, N'Balamurali', CAST(N'2021-11-21' AS Date), N'chennai', N'DellGamingLaptop')
+INSERT [dbo].[ProductOrderDetails] ([OrderId], [CustomerId], [BillId], [Customername], [OrderedDate], [Address], [Productname]) VALUES (4072, 2056, 5028, N'Balamurali', CAST(N'2021-11-21' AS Date), N'chennai', N'Iphone')
+
+GO
 SET IDENTITY_INSERT [dbo].[ProductOrders] ON 
 
 INSERT [dbo].[ProductOrders] ([OrderId], [ProductId], [Productname], [quantity], [Price], [OrderedDate], [CustomerId]) VALUES (4067, 1006, N'Dell Gaming Laptop', 4, CAST(400000 AS Decimal(18, 0)), CAST(N'2021-11-21' AS Date), 2056)
